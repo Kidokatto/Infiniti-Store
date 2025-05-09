@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { registerUser } from "../services/auth";
 
-function Register() {
+function Register({ onRegisterSuccess }) {
   const [form, setForm] = useState({ username: "", email: "", password: "" });
   const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -11,43 +12,60 @@ function Register() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     try {
-      const res = await registerUser(form);
-      setMessage("Usuario registrado con éxito: " + res.username);
+      await registerUser(form);
+      setMessage("Registro exitoso! Ahora puedes iniciar sesión.");
+      if (onRegisterSuccess) {
+        setTimeout(() => {
+          onRegisterSuccess();
+        }, 2000);
+      }
     } catch (err) {
-      setMessage("Error al registrar: " + err.response?.data?.detail);
+      setMessage("Error: " + (err.response?.data?.detail || "Error desconocido"));
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div style={{ padding: 20 }}>
+    <div className="auth-form">
       <h2>Registro</h2>
       <form onSubmit={handleSubmit}>
-        <input
-          name="username"
-          value={form.username}
-          onChange={handleChange}
-          placeholder="Username"
-        />
-        <br />
-        <input
-          name="email"
-          value={form.email}
-          onChange={handleChange}
-          placeholder="Email"
-        />
-        <br />
-        <input
-          name="password"
-          type="password"
-          value={form.password}
-          onChange={handleChange}
-          placeholder="Password"
-        />
-        <br />
-        <button type="submit">Registrar</button>
+        <div className="form-group">
+          <input
+            name="username"
+            value={form.username}
+            onChange={handleChange}
+            placeholder="Usuario"
+            required
+          />
+        </div>
+        <div className="form-group">
+          <input
+            name="email"
+            type="email"
+            value={form.email}
+            onChange={handleChange}
+            placeholder="Email"
+            required
+          />
+        </div>
+        <div className="form-group">
+          <input
+            name="password"
+            type="password"
+            value={form.password}
+            onChange={handleChange}
+            placeholder="Contraseña"
+            required
+          />
+        </div>
+        <button type="submit" disabled={loading}>
+          {loading ? 'Registrando...' : 'Registrarse'}
+        </button>
       </form>
-      {message && <p>{message}</p>}
+      {message && <p className={message.includes('Error') ? 'error-message' : 'success-message'}>{message}</p>}
     </div>
   );
 }
