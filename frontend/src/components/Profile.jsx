@@ -1,10 +1,8 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom"; // Importa useNavigate
-
-function Navbar() {
+import "../Profile.css"; // Asegúrate de que la ruta sea correcta
+const Profile = () => {
   const [user, setUser] = useState(null);
-  const navigate = useNavigate(); // Hook para navegar a otras rutas
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -27,24 +25,33 @@ function Navbar() {
     }
   }, []); // Solo una vez al montar
 
-  const handleGoToProfile = () => {
-    // Redirige al componente de perfil
-    navigate("/profile");
-  };
-
   if (!user) return <div>Cargando perfil...</div>;
 
   return (
-    <div>
-      {" "}
-      <header className="marketplace-header">
-        <div className="header-content">
-          <h1>Marketplace</h1>
-          <button onClick={handleGoToProfile}>Ver Perfil</button>
-        </div>
-      </header>
+    <div className="container">
+      <section className="carta">
+        <img
+          src="/assets/yo.jpg"
+          alt="Fondo de la carta"
+          className="fondoCarta"
+        />
+
+        <img
+          src="AQUI LA IMAGEN DE PERFIL"
+          alt="Foto de perfil"
+          className="fotoPerfil"
+        />
+
+        <p>{user.username}</p>
+        <p>{user.email}</p>
+
+        <section className="info">
+          <div>Ciudad</div>
+          <div>Enviar mensaje</div>
+        </section>
+      </section>
     </div>
   );
-}
+};
 
-export default Navbar;
+export default Profile;

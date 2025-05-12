@@ -1,14 +1,18 @@
-import { Outlet, useLocation } from "react-router-dom"; // ✅ useLocation agregado
+import { Outlet, useLocation } from "react-router-dom";
 import Navbar from "./Navbar";
 
 const LayoutNavbar = () => {
   const location = useLocation();
-  const hideNavbar = location.pathname === "/login"; // Oculta navbar solo en /login
+
+  // Lista de rutas donde NO quieres mostrar el navbar
+  const hiddenRoutes = ["/login"];
+
+  const hideNavbar = hiddenRoutes.includes(location.pathname);
 
   return (
     <>
       {!hideNavbar && <Navbar />}
-      <Outlet /> {/* Renderiza la ruta activa */}
+      <Outlet />
     </>
   );
 };
