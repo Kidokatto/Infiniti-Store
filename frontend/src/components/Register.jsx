@@ -2,7 +2,14 @@ import { useState } from "react";
 import { registerUser } from "../services/auth";
 
 function Register({ onRegisterSuccess }) {
-  const [form, setForm] = useState({ username: "", email: "", password: "" });
+  const [form, setForm] = useState({
+    username: "",
+    email: "",
+    password: "",
+    city: "", // Campo para la ciudad
+    profile_picture: null, // Foto de perfil
+    cover_photo: null, // Foto de portada
+  });
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -10,11 +17,26 @@ function Register({ onRegisterSuccess }) {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
+  const handleFileChange = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.files[0] });
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
+
+    // FormData para enviar los archivos junto con los demás datos
+    const formData = new FormData();
+    formData.append("username", form.username);
+    formData.append("email", form.email);
+    formData.append("password", form.password);
+    formData.append("city", form.city);
+    if (form.profile_picture)
+      formData.append("profile_picture", form.profile_picture);
+    if (form.cover_photo) formData.append("cover_photo", form.cover_photo);
+
     try {
-      await registerUser(form);
+      await registerUser(formData); // Asegúrate de que `registerUser` soporte FormData
       setMessage("Registro exitoso! Ahora puedes iniciar sesión.");
       if (onRegisterSuccess) {
         setTimeout(() => {
@@ -61,6 +83,31 @@ function Register({ onRegisterSuccess }) {
             onChange={handleChange}
             placeholder="Contraseña"
             required
+          />
+        </div>
+        <div className="form-group">
+          <input
+            name="city"
+            value={form.city}
+            onChange={handleChange}
+            placeholder="Ciudad"
+            required
+          />
+        </div>
+        <div className="form-group">
+          <input
+            name="profile_picture"
+            type="file"
+            onChange={handleFileChange}
+            accept="image/*"
+          />
+        </div>
+        <div className="form-group">
+          <input
+            name="cover_photo"
+            type="file"
+            onChange={handleFileChange}
+            accept="image/*"
           />
         </div>
         <button type="submit" disabled={loading}>

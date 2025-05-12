@@ -2,14 +2,18 @@ from fastapi import FastAPI
 from database import Base, engine
 from routes import auth, product
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 import uvicorn
-
 
 app = FastAPI()
 
+# Montar carpeta de archivos estáticos
+app.mount("/static", StaticFiles(directory="uploads"), name="static")
+
+# CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173"],
+    allow_origins=["http://localhost:5173"],  # Ajusta si usas otro puerto para Vite
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

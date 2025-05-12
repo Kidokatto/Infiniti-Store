@@ -6,7 +6,7 @@ from fastapi.security import OAuth2PasswordBearer
 from fastapi import Depends, HTTPException, status
 
 from models.auth import User
-from database import get_db  # ← Importamos correctamente la función que da la sesión de DB
+from database import get_db
 
 # Configuraciones del JWT
 SECRET_KEY = "secretito"  # ⚠️ Usa una clave segura y almacénala en variables de entorno en producción
@@ -16,7 +16,7 @@ ACCESS_TOKEN_EXPIRE_MINUTES = 30
 # Manejo de contraseñas
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/login")  # El token se obtiene desde esta ruta
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/login")
 
 def hash_password(password: str):
     return pwd_context.hash(password)

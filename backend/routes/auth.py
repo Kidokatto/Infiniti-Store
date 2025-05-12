@@ -1,11 +1,17 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, File, UploadFile, Form
 from sqlalchemy.orm import Session
 from database import SessionLocal
 from models.auth import User
-from schemas.auth import UserCreate, UserLogin, UserResponse
+from schemas.auth import UserResponse, UserLogin
 from utils.security import hash_password, verify_password, create_access_token, get_current_user
+import shutil
+import os
 
 router = APIRouter(prefix="/auth")
+
+# Carpeta donde se guardarán las imágenes subidas
+UPLOAD_DIR = "uploads"
+os.makedirs(UPLOAD_DIR, exist_ok=True)
 
 def get_db():
     db = SessionLocal()
@@ -14,31 +20,63 @@ def get_db():
     finally:
         db.close()
 
-@router.post("/register", response_model=UserResponse)
-def register(user: UserCreate, db: Session = Depends(get_db)):
-    if db.query(User).filter(User.username == user.username).first():
-        raise HTTPException(status_code=400, detail="El usuario ya se encuentra en uso")
-    
-    new_user = User(
-        username=user.username,
-        email=user.email,
-        password=hash_password(user.password)
-    )
-    db.add(new_user)
-    db.commit()
-    db.refresh(new_user)
-    return new_user
-
 @router.post("/login")
 def login(user: UserLogin, db: Session = Depends(get_db)):
     db_user = db.query(User).filter(User.username == user.username).first()
     if not db_user or not verify_password(user.password, db_user.password):
         raise HTTPException(status_code=401, detail="Credenciales incorrectas")
     
-    # Usamos el `id` del usuario en el token
-    token = create_access_token({"sub": str(db_user.id)})  # convertir id a string
+    token = create_access_token({"sub": str(db_user.id)})
     return {"access_token": token, "token_type": "bearer"}
 
-@router.get("/profile", response_model=UserResponse)
-def get_profile(current_user: User = Depends(get_current_user)):
-    return current_user
+@router.get("/profile")
+async def get_profile(current_user: User = Depends(get_current_user)):
+    return {
+        "username": current_user.username,
+        "email": current_user.email,
+        "profile_picture": current_user.profile_picture,
+        "cover_photo": current_user.cover_photo,
+        "city": current_user.city,
+    }
+
+@router.post("/register", response_model=UserResponse)
+async def register(
+    username: str = Form(...),
+    email: str = Form(...),
+    password: str = Form(...),
+    city: str = Form(...),
+    profile_picture: UploadFile = File(...),
+    cover_photo: UploadFile = File(...),
+    db: Session = Depends(get_db)
+):
+    if db.query(User).filter(User.username == username).first():
+        raise HTTPException(status_code=400, detail="El usuario ya se encuentra en uso")
+    
+    # Generar nombres seguros para los archivos
+    profile_filename = f"profile_{username}_{profile_picture.filename}"
+    cover_filename = f"cover_{username}_{cover_photo.filename}"
+
+    profile_picture_path = os.path.join(UPLOAD_DIR, profile_filename)
+    cover_photo_path = os.path.join(UPLOAD_DIR, cover_filename)
+
+    # Guardar los archivos en disco
+    with open(profile_picture_path, "wb") as buffer:
+        shutil.copyfileobj(profile_picture.file, buffer)
+    with open(cover_photo_path, "wb") as buffer:
+        shutil.copyfileobj(cover_photo.file, buffer)
+
+    # Crear el nuevo usuario
+    new_user = User(
+        username=username,
+        email=email,
+        password=hash_password(password),
+        city=city,
+        profile_picture=profile_filename,  # Guardar solo el nombre del archivo
+        cover_photo=cover_filename
+    )
+    
+    db.add(new_user)
+    db.commit()
+    db.refresh(new_user)
+    
+    return new_user

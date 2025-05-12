@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom"; // Importa useNavigate
+import { useNavigate } from "react-router-dom";
 
 function Navbar() {
   const [user, setUser] = useState(null);
-  const navigate = useNavigate(); // Hook para navegar a otras rutas
+  const navigate = useNavigate();
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -25,21 +25,22 @@ function Navbar() {
           setUser(null);
         });
     }
-  }, []); // Solo una vez al montar
+  }, []);
 
   const handleGoToProfile = () => {
-    // Redirige al componente de perfil
     navigate("/profile");
   };
 
-  if (!user) return <div>Cargando perfil...</div>;
-
   return (
     <div>
-      {" "}
       <header className="marketplace-header">
         <div className="header-content">
-          <h1>Marketplace</h1>
+          <h1
+            style={{ cursor: "pointer" }}
+            onClick={() => navigate("/products")}
+          >
+            Marketplace
+          </h1>
           <button onClick={handleGoToProfile}>Ver Perfil</button>
         </div>
       </header>
