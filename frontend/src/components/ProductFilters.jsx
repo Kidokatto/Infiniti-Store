@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { getCategories, getBrands } from '../services/product';
+import React, { useState, useEffect } from "react";
+import { getCategories, getBrands } from "../services/product";
 
 function ProductFilters({ filters, onFilterChange }) {
   const [categories, setCategories] = useState([]);
@@ -10,12 +10,12 @@ function ProductFilters({ filters, onFilterChange }) {
       try {
         const [categoriesData, brandsData] = await Promise.all([
           getCategories(),
-          getBrands()
+          getBrands(),
         ]);
         setCategories(categoriesData);
         setBrands(brandsData);
       } catch (error) {
-        console.error('Error fetching filter options:', error);
+        console.error("Error fetching filter options:", error);
       }
     };
 
@@ -24,12 +24,12 @@ function ProductFilters({ filters, onFilterChange }) {
 
   const handleFilterChange = (e) => {
     const { name, value, type, checked } = e.target;
-    
-    if (type === 'checkbox') {
+
+    if (type === "checkbox") {
       onFilterChange({ ...filters, [name]: checked });
     } else {
       // Convertir string vacío a null para evitar errores
-      const newValue = value === '' ? null : value;
+      const newValue = value === "" ? null : value;
       onFilterChange({ ...filters, [name]: newValue });
     }
   };
@@ -41,16 +41,18 @@ function ProductFilters({ filters, onFilterChange }) {
   return (
     <div className="filters-container">
       <div className="category-list">
-        <button 
-          className={`category-item ${!filters.category ? 'active' : ''}`}
+        <button
+          className={`category-item ${!filters.category ? "active" : ""}`}
           onClick={() => handleCategoryClick(null)}
         >
           Todas las categorías
         </button>
-        {categories.map(category => (
-          <button 
-            key={category} 
-            className={`category-item ${filters.category === category ? 'active' : ''}`}
+        {categories.map((category) => (
+          <button
+            key={category}
+            className={`category-item ${
+              filters.category === category ? "active" : ""
+            }`}
             onClick={() => handleCategoryClick(category)}
           >
             {category}
@@ -60,16 +62,16 @@ function ProductFilters({ filters, onFilterChange }) {
 
       <div className="advanced-filters">
         <h3>Filtros avanzados</h3>
-        
+
         <div className="filter-group">
           <label>Marca</label>
           <select
             name="brand"
-            value={filters.brand || ''}
+            value={filters.brand || ""}
             onChange={handleFilterChange}
           >
             <option value="">Todas las marcas</option>
-            {brands.map(brand => (
+            {brands.map((brand) => (
               <option key={brand} value={brand}>
                 {brand}
               </option>
@@ -83,7 +85,7 @@ function ProductFilters({ filters, onFilterChange }) {
             <input
               type="number"
               name="min_price"
-              value={filters.min_price || ''}
+              value={filters.min_price || ""}
               onChange={handleFilterChange}
               placeholder="Mínimo"
               min="0"
@@ -92,7 +94,7 @@ function ProductFilters({ filters, onFilterChange }) {
             <input
               type="number"
               name="max_price"
-              value={filters.max_price || ''}
+              value={filters.max_price || ""}
               onChange={handleFilterChange}
               placeholder="Máximo"
               min="0"

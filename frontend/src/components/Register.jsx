@@ -22,7 +22,9 @@ function Register({ onRegisterSuccess }) {
         }, 2000);
       }
     } catch (err) {
-      setMessage("Error: " + (err.response?.data?.detail || "Error desconocido"));
+      setMessage(
+        "Error: " + (err.response?.data?.detail || "Error desconocido")
+      );
     } finally {
       setLoading(false);
     }
@@ -62,10 +64,18 @@ function Register({ onRegisterSuccess }) {
           />
         </div>
         <button type="submit" disabled={loading}>
-          {loading ? 'Registrando...' : 'Registrarse'}
+          {loading ? "Registrando..." : "Registrarse"}
         </button>
       </form>
-      {message && <p className={message.includes('Error') ? 'error-message' : 'success-message'}>{message}</p>}
+      {message && (
+        <p
+          className={
+            message.includes("Error") ? "error-message" : "success-message"
+          }
+        >
+          {message}
+        </p>
+      )}
     </div>
   );
 }

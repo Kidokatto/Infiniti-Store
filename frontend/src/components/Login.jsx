@@ -16,13 +16,15 @@ function Login({ onLoginSuccess }) {
     setLoading(true);
     try {
       const res = await loginUser(form);
-      localStorage.setItem('token', res.access_token);
+      localStorage.setItem("token", res.access_token);
       setMessage("Login exitoso!");
       if (onLoginSuccess) {
         onLoginSuccess();
       }
     } catch (err) {
-      setMessage("Error de login: " + (err.response?.data?.detail || "Error desconocido"));
+      setMessage(
+        "Error de login: " + (err.response?.data?.detail || "Error desconocido")
+      );
     } finally {
       setLoading(false);
     }
@@ -52,10 +54,18 @@ function Login({ onLoginSuccess }) {
           />
         </div>
         <button type="submit" disabled={loading}>
-          {loading ? 'Iniciando sesión...' : 'Iniciar Sesión'}
+          {loading ? "Iniciando sesión..." : "Iniciar Sesión"}
         </button>
       </form>
-      {message && <p className={message.includes('Error') ? 'error-message' : 'success-message'}>{message}</p>}
+      {message && (
+        <p
+          className={
+            message.includes("Error") ? "error-message" : "success-message"
+          }
+        >
+          {message}
+        </p>
+      )}
     </div>
   );
 }

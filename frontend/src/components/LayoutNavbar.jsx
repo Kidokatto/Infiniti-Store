@@ -1,13 +1,16 @@
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom"; // ✅ useLocation agregado
 import Navbar from "./Navbar";
 
-const LayoutWithNavbar = () => {
+const LayoutNavbar = () => {
+  const location = useLocation();
+  const hideNavbar = location.pathname === "/login"; // Oculta navbar solo en /login
+
   return (
     <>
-      <Navbar />
-      <Outlet />
+      {!hideNavbar && <Navbar />}
+      <Outlet /> {/* Renderiza la ruta activa */}
     </>
   );
 };
 
-export default LayoutWithNavbar;
+export default LayoutNavbar;

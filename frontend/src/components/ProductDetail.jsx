@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { getProduct } from '../services/product';
-import { FiArrowLeft, FiShoppingCart } from 'react-icons/fi';
+import React, { useState, useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import { getProduct } from "../services/product";
+import { FiArrowLeft, FiShoppingCart } from "react-icons/fi";
 
 function ProductDetail() {
   const { id } = useParams();
@@ -16,7 +16,7 @@ function ProductDetail() {
         const data = await getProduct(id);
         setProduct(data);
       } catch (err) {
-        setError('Error al cargar el producto');
+        setError("Error al cargar el producto");
         console.error(err);
       } finally {
         setLoading(false);
@@ -37,7 +37,7 @@ function ProductDetail() {
   if (error || !product) {
     return (
       <div className="product-detail-container">
-        <div className="error">{error || 'Producto no encontrado'}</div>
+        <div className="error">{error || "Producto no encontrado"}</div>
       </div>
     );
   }
@@ -50,15 +50,15 @@ function ProductDetail() {
 
       <div className="product-detail-content">
         <div className="product-detail-image">
-          <img 
-            src={product.image_url || 'https://via.placeholder.com/600x600'} 
+          <img
+            src={product.image_url || "https://via.placeholder.com/600x600"}
             alt={product.name}
           />
         </div>
 
         <div className="product-detail-info">
           <h1>{product.name}</h1>
-          
+
           <div className="product-detail-price">
             ${product.price.toFixed(2)}
           </div>
@@ -72,22 +72,19 @@ function ProductDetail() {
           </div>
 
           <div className="product-detail-stock">
-            <strong>Stock:</strong> 
-            <span className={product.stock > 0 ? 'in-stock' : 'out-of-stock'}>
-              {product.stock > 0 ? `${product.stock} disponibles` : 'Agotado'}
+            <strong>Stock:</strong>
+            <span className={product.stock > 0 ? "in-stock" : "out-of-stock"}>
+              {product.stock > 0 ? `${product.stock} disponibles` : "Agotado"}
             </span>
           </div>
 
           <div className="product-detail-description">
             <h3>Descripción</h3>
-            <p>{product.description || 'Sin descripción disponible'}</p>
+            <p>{product.description || "Sin descripción disponible"}</p>
           </div>
 
           <div className="product-detail-actions">
-            <button 
-              className="buy-button"
-              disabled={product.stock === 0}
-            >
+            <button className="buy-button" disabled={product.stock === 0}>
               <FiShoppingCart /> Comprar ahora
             </button>
           </div>

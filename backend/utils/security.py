@@ -6,9 +6,10 @@ from fastapi.security import OAuth2PasswordBearer
 from fastapi import Depends, HTTPException, status
 
 from models.auth import User
-from database import get_db
+from database import get_db  # ← Importamos correctamente la función que da la sesión de DB
+
 # Configuraciones del JWT
-SECRET_KEY = "secretito"  
+SECRET_KEY = "secretito"  # ⚠️ Usa una clave segura y almacénala en variables de entorno en producción
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
 
@@ -52,5 +53,3 @@ def get_current_user(
         raise credentials_exception
 
     return user
-
-
