@@ -75,7 +75,7 @@ function Dashboard() {
           <div className="search-box">
             <input
               type="text"
-              placeholder="Buscar en Marketplace"
+              placeholder="Buscar en Infinite Store"
               value={filters.search || ""}
               onChange={(e) =>
                 handleFilterChange({ ...filters, search: e.target.value })

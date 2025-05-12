@@ -39,7 +39,7 @@ function Navbar() {
             style={{ cursor: "pointer" }}
             onClick={() => navigate("/products")}
           >
-            Marketplace
+            Infinite Store
           </h1>
           <button onClick={handleGoToProfile}>Ver Perfil</button>
         </div>
