@@ -4,9 +4,11 @@ import { getProducts } from "../services/product";
 import ProductItem from "./ProductItem";
 import ProductFilters from "./ProductFilters";
 import { FiShoppingBag, FiUser, FiPlus } from "react-icons/fi";
-
+import ProductForm from "./ProductForm";
 function Dashboard() {
   const navigate = useNavigate();
+
+  const [showForm, setShowForm] = useState(false);
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -81,6 +83,21 @@ function Dashboard() {
                 handleFilterChange({ ...filters, search: e.target.value })
               }
             />
+          </div>
+          <div className="sidebar-nav">
+            <button
+              className="nav-item active"
+              onClick={() => setShowForm(!showForm)}
+            >
+              <FiPlus style={{ marginRight: "5px" }} />
+              {showForm ? "Cerrar formulario" : "Agregar producto"}
+            </button>
+
+            {showForm && (
+              <div className="product-form-container">
+                <ProductForm />
+              </div>
+            )}
           </div>
 
           <div className="sidebar-nav">

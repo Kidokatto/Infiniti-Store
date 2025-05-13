@@ -26,7 +26,13 @@ const Profile = () => {
     }
   }, []); // Solo una vez al montar
 
-  if (!user) return <div>Cargando perfil...</div>;
+  if (!user) {
+    return (
+      <div className="loading-container">
+        <div className="loading-text">Cargando perfil...</div>
+      </div>
+    );
+  }
 
   return (
     <div className="container">

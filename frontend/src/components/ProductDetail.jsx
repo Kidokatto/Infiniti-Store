@@ -26,6 +26,12 @@ function ProductDetail() {
     fetchProduct();
   }, [id]);
 
+  const formatPrice = (value) => {
+    return value
+      .toFixed(0) // Sin decimales
+      .replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+  };
+
   if (loading) {
     return (
       <div className="product-detail-container">
@@ -49,8 +55,10 @@ function ProductDetail() {
       </button>
 
       <div className="product-detail-content">
-        <div className="product-detail-image">
+        {/* Imagen del producto */}
+        <div className="image-wrapper">
           <img
+            className="product-image"
             src={
               product.image_url
                 ? `http://localhost:8001${product.image_url}`
@@ -60,11 +68,12 @@ function ProductDetail() {
           />
         </div>
 
+        {/* Información del producto */}
         <div className="product-detail-info">
           <h1>{product.name}</h1>
 
           <div className="product-detail-price">
-            ${product.price.toFixed(2)}
+            ${formatPrice(product.price)}
           </div>
 
           <div className="product-detail-brand">

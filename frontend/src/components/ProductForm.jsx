@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import "../ProductForm.css"; // Asegúrate de que el archivo CSS esté en la misma carpeta
 
 const ProductForm = () => {
   const [formData, setFormData] = useState({
@@ -15,12 +16,22 @@ const ProductForm = () => {
   const [message, setMessage] = useState(null);
   const [error, setError] = useState(null);
 
+  const formatPrice = (value) => {
+    const cleanedValue = value.replace(/\D/g, "");
+    return cleanedValue.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+  };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
+    let formattedValue = value;
+
+    if (name === "price") {
+      formattedValue = formatPrice(value);
+    }
 
     setFormData((prev) => ({
       ...prev,
-      [name]: value,
+      [name]: formattedValue,
     }));
   };
 
@@ -33,8 +44,10 @@ const ProductForm = () => {
 
     const form = new FormData();
     Object.entries(formData).forEach(([key, value]) => {
-      form.append(key, value);
+      const cleanValue = key === "price" ? value.replace(/\./g, "") : value;
+      form.append(key, cleanValue);
     });
+
     if (image) {
       form.append("image", image);
     }
@@ -56,6 +69,8 @@ const ProductForm = () => {
         brand: "",
       });
       setImage(null);
+
+      window.location.reload();
     } catch (err) {
       console.error(err);
       setError("Error al agregar el producto");
@@ -64,7 +79,7 @@ const ProductForm = () => {
   };
 
   return (
-    <div style={{ maxWidth: 500, margin: "0 auto" }}>
+    <div className="product-form-container">
       <h2>Agregar Producto</h2>
       {message && <p style={{ color: "green" }}>{message}</p>}
       {error && <p style={{ color: "red" }}>{error}</p>}
@@ -86,7 +101,7 @@ const ProductForm = () => {
           required
         />
         <input
-          type="number"
+          type="text"
           name="price"
           placeholder="Precio"
           value={formData.price}
@@ -117,7 +132,6 @@ const ProductForm = () => {
           onChange={handleChange}
           required
         />
-
         <input
           type="file"
           name="image"
@@ -125,7 +139,6 @@ const ProductForm = () => {
           onChange={handleImageChange}
           required
         />
-
         <button type="submit">Agregar Producto</button>
       </form>
     </div>

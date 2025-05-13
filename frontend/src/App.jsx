@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   BrowserRouter as Router,
   Routes,
@@ -21,10 +21,26 @@ function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [activeTab, setActiveTab] = useState("login");
 
+  // Verifica si ya hay token al cargar la app
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      setIsAuthenticated(true);
+    }
+  }, []);
+
+  // Función para cerrar sesión
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    setIsAuthenticated(false);
+  };
+
+  // Función que se ejecuta al hacer login exitoso
   const handleLogin = () => {
     setIsAuthenticated(true);
   };
 
+  // Si no está autenticado, muestra login/registro
   if (!isAuthenticated) {
     return (
       <div className="auth-container">
@@ -55,19 +71,17 @@ function App() {
   return (
     <Router>
       <Routes>
-        {/* Rutas con navbar */}
-        <Route element={<LayoutNavbar />}>
+        {/* Rutas que incluyen la navbar */}
+        <Route element={<LayoutNavbar onLogout={handleLogout} />}>
           <Route path="/" element={<Dashboard />} />
           <Route path="/product/:id" element={<ProductDetail />} />
-          <Route path="*" element={<Navigate to="/" replace />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/ProductForm" element={<ProductForm />} />
+          <Route path="*" element={<Navigate to="/" replace />} />
         </Route>
 
-        {/* Ruta sin navbar */}
+        {/* Ruta extra por si recarga justo en /login */}
         <Route path="/login" element={<Login onLoginSuccess={handleLogin} />} />
-        <Route path="/Profile" element={<Profile />} />
-        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </Router>
   );

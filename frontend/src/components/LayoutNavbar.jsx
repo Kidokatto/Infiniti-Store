@@ -1,7 +1,7 @@
 import { Outlet, useLocation } from "react-router-dom";
 import Navbar from "./Navbar";
 
-const LayoutNavbar = () => {
+const LayoutNavbar = ({ onLogout }) => {
   const location = useLocation();
 
   // Lista de rutas donde NO quieres mostrar el navbar
@@ -11,7 +11,7 @@ const LayoutNavbar = () => {
 
   return (
     <>
-      {!hideNavbar && <Navbar />}
+      {!hideNavbar && <Navbar onLogout={onLogout} />}
       <Outlet />
     </>
   );

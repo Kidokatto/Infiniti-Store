@@ -13,12 +13,12 @@ body {
   justify-content: center;
   align-items: center;
   width: 100%;
-  height: 100vh;
+  height: 45vh;
   padding: 20px;
 }
 
 .carta {
-  width: 600px;
+  width: 1000px;
   background-color: white;
   border-radius: 10px;
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
@@ -29,17 +29,17 @@ body {
 
 .fondoCarta {
   width: 100%;
-  height: 200px;
+  height: 300px;
   object-fit: cover;
   background-color: #e3e3e3;
 }
 
 .fotoPerfil {
-  width: 150px;
-  height: 150px;
+  width: 250px;
+  height: 250px;
   border-radius: 50%;
   border: 5px solid white;
-  margin-top: -75px; /* Para que se superponga con el fondo */
+  margin-top: -130px; /* Para que se superponga con el fondo */
   margin-left: 25px;
   object-fit: cover;
 }
@@ -53,11 +53,11 @@ body {
 
 .carta p:nth-child(3) {
   font-weight: bold;
-  font-size: 20px;
+  font-size: 30px;
 }
 
 .carta p:nth-child(4) {
-  font-size: 14px;
+  font-size: 15px;
   color: #777;
 }
 
@@ -102,4 +102,32 @@ body {
 
 .boton button:hover {
   background-color: #007bb5;
+}
+
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* Esto hace que ocupe toda la altura de la pantalla */
+  background-color: #f0f0f0;
+}
+
+.loading-text {
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: #007bff;
+  animation: fadeIn 1.5s ease-in-out infinite;
+}
+
+/* Animación de desvanecimiento */
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
 }
