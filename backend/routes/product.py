@@ -1,5 +1,7 @@
-from fastapi import APIRouter, Depends, HTTPException, Query
+from fastapi import APIRouter, Depends, HTTPException, Query, Form, File, UploadFile
+import os
 from sqlalchemy.orm import Session
+import uuid
 from sqlalchemy import or_, and_
 from typing import Optional
 import math
@@ -95,13 +97,46 @@ def get_product(product_id: int, db: Session = Depends(get_db)):
     return product
 
 @router.post("/", response_model=ProductResponse)
-def create_product(product: ProductCreate, db: Session = Depends(get_db)):
-    db_product = Product(**product.dict())
+def create_product(
+    name: str = Form(...),
+    description: str = Form(...),
+    price: float = Form(...),
+    stock: int = Form(...),
+    category: str = Form(...),
+    brand: str = Form(...),
+    image: UploadFile = File(...),
+    db: Session = Depends(get_db)
+):
+    # Crear carpeta si no existe
+    image_dir = "product_images"
+    os.makedirs(image_dir, exist_ok=True)
+
+    # Generar nombre de archivo único
+    ext = os.path.splitext(image.filename)[-1]
+    unique_filename = f"{uuid.uuid4().hex}{ext}"
+
+    # Guardar imagen
+    image_path = os.path.join(image_dir, unique_filename)
+    with open(image_path, "wb") as buffer:
+        buffer.write(image.file.read())
+
+    # Construir URL accesible públicamente
+    image_url = f"/product-images/{unique_filename}"
+
+    # Crear producto en DB
+    db_product = Product(
+        name=name,
+        description=description,
+        price=price,
+        stock=stock,
+        category=category,
+        brand=brand,
+        image_url=image_url
+    )
     db.add(db_product)
     db.commit()
     db.refresh(db_product)
     return db_product
-
 @router.put("/{product_id}", response_model=ProductResponse)
 def update_product(
     product_id: int,

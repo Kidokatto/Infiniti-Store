@@ -51,7 +51,11 @@ function ProductDetail() {
       <div className="product-detail-content">
         <div className="product-detail-image">
           <img
-            src={product.image_url || "https://via.placeholder.com/600x600"}
+            src={
+              product.image_url
+                ? `http://localhost:8001${product.image_url}`
+                : "https://via.placeholder.com/600x600"
+            }
             alt={product.name}
           />
         </div>
@@ -72,7 +76,7 @@ function ProductDetail() {
           </div>
 
           <div className="product-detail-stock">
-            <strong>Stock:</strong>
+            <strong>Stock:</strong>{" "}
             <span className={product.stock > 0 ? "in-stock" : "out-of-stock"}>
               {product.stock > 0 ? `${product.stock} disponibles` : "Agotado"}
             </span>

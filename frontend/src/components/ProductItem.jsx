@@ -4,7 +4,11 @@ function ProductItem({ product, onClick }) {
   return (
     <div className="product-card" onClick={() => onClick(product.id)}>
       <img
-        src={product.image_url || "https://placehold.co/600x400"}
+        src={
+          product.image_url
+            ? `http://localhost:8001${product.image_url}`
+            : "https://placehold.co/600x400"
+        }
         alt={product.name}
         className="product-image"
       />

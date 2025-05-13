@@ -9,6 +9,8 @@ app = FastAPI()
 
 # Montar carpeta de archivos estáticos
 app.mount("/static", StaticFiles(directory="uploads"), name="static")
+app.mount("/product-images", StaticFiles(directory="product_images"), name="product-images")
+
 
 # CORS
 app.add_middleware(

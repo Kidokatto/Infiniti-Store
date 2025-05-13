@@ -11,6 +11,7 @@ import Dashboard from "./components/Dashboard";
 import ProductDetail from "./components/ProductDetail";
 import LayoutNavbar from "./components/LayoutNavbar";
 import Profile from "./components/Profile";
+import ProductForm from "./components/ProductForm";
 import "./Dashboard.css";
 import "./ProductFilters.css";
 import "./ProductDetail.css";
@@ -60,6 +61,7 @@ function App() {
           <Route path="/product/:id" element={<ProductDetail />} />
           <Route path="*" element={<Navigate to="/" replace />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/ProductForm" element={<ProductForm />} />
         </Route>
 
         {/* Ruta sin navbar */}
