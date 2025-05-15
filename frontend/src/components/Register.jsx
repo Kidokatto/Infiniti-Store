@@ -1,14 +1,15 @@
 import { useState } from "react";
 import { registerUser } from "../services/auth";
-
+import logo from "../assets/logo.png";
+import "../Register.css";
 function Register({ onRegisterSuccess }) {
   const [form, setForm] = useState({
     username: "",
     email: "",
     password: "",
-    city: "", // Campo para la ciudad
-    profile_picture: null, // Foto de perfil
-    cover_photo: null, // Foto de portada
+    city: "",
+    profile_picture: null,
+    cover_photo: null,
   });
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
@@ -53,76 +54,82 @@ function Register({ onRegisterSuccess }) {
   };
 
   return (
-    <div className="auth-form">
-      <h2>Registro</h2>
-      <form onSubmit={handleSubmit}>
-        <div className="form-group">
-          <input
-            name="username"
-            value={form.username}
-            onChange={handleChange}
-            placeholder="Usuario"
-            required
-          />
-        </div>
-        <div className="form-group">
-          <input
-            name="email"
-            type="email"
-            value={form.email}
-            onChange={handleChange}
-            placeholder="Email"
-            required
-          />
-        </div>
-        <div className="form-group">
-          <input
-            name="password"
-            type="password"
-            value={form.password}
-            onChange={handleChange}
-            placeholder="Contraseña"
-            required
-          />
-        </div>
-        <div className="form-group">
-          <input
-            name="city"
-            value={form.city}
-            onChange={handleChange}
-            placeholder="Ciudad"
-            required
-          />
-        </div>
-        <div className="form-group">
-          <input
-            name="profile_picture"
-            type="file"
-            onChange={handleFileChange}
-            accept="image/*"
-          />
-        </div>
-        <div className="form-group">
-          <input
-            name="cover_photo"
-            type="file"
-            onChange={handleFileChange}
-            accept="image/*"
-          />
-        </div>
-        <button type="submit" disabled={loading}>
-          {loading ? "Registrando..." : "Registrarse"}
-        </button>
-      </form>
-      {message && (
-        <p
-          className={
-            message.includes("Error") ? "error-message" : "success-message"
-          }
-        >
-          {message}
-        </p>
-      )}
+    <div className="register-auth-form">
+      <div className="register-form-container">
+        <form onSubmit={handleSubmit}>
+          <h2>Registro</h2>
+
+          <div className="register-form-group">
+            <input
+              name="username"
+              value={form.username}
+              onChange={handleChange}
+              placeholder="Usuario"
+              required
+            />
+          </div>
+          <div className="register-form-group">
+            <input
+              name="email"
+              type="email"
+              value={form.email}
+              onChange={handleChange}
+              placeholder="Email"
+              required
+            />
+          </div>
+          <div className="register-form-group">
+            <input
+              name="password"
+              type="password"
+              value={form.password}
+              onChange={handleChange}
+              placeholder="Contraseña"
+              required
+            />
+          </div>
+          <div className="register-form-group">
+            <input
+              name="city"
+              value={form.city}
+              onChange={handleChange}
+              placeholder="Ciudad"
+              required
+            />
+          </div>
+          <div className="register-form-group">
+            <input
+              name="profile_picture"
+              type="file"
+              onChange={handleFileChange}
+              accept="image/*"
+            />
+          </div>
+          <div className="register-form-group">
+            <input
+              name="cover_photo"
+              type="file"
+              onChange={handleFileChange}
+              accept="image/*"
+            />
+          </div>
+          <button type="submit" disabled={loading}>
+            {loading ? "Registrando..." : "Registrarse"}
+          </button>
+        </form>
+        {message && (
+          <p
+            className={
+              message.includes("Error") ? "error-message" : "success-message"
+            }
+          >
+            {message}
+          </p>
+        )}
+      </div>
+      <div className="register-image-login-container">
+        <img className="register-image-login" src={logo} alt="logo" />
+      </div>
     </div>
   );
 }

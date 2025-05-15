@@ -59,11 +59,22 @@ function App() {
           </button>
         </div>
 
-        {activeTab === "login" ? (
-          <Login onLoginSuccess={handleLogin} />
-        ) : (
-          <Register onRegisterSuccess={() => setActiveTab("login")} />
-        )}
+        <div className="form-switcher">
+          <div
+            className={`form-box ${
+              activeTab === "login" ? "show" : "hide-left"
+            }`}
+          >
+            <Login onLoginSuccess={handleLogin} />
+          </div>
+          <div
+            className={`form-box ${
+              activeTab === "register" ? "show" : "hide-right"
+            }`}
+          >
+            <Register onRegisterSuccess={() => setActiveTab("login")} />
+          </div>
+        </div>
       </div>
     );
   }

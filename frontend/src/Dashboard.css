@@ -1,6 +1,9 @@
 .marketplace-container {
+  margin-top: 70px;
   min-height: 100vh;
-  background-color: #f0f2f5;
+  background: linear-gradient(125deg, #c89bfb, #79a4f5);
+  background-size: 100% 200%;
+  animation: gradientMove 30s ease infinite; /* Animación muy lenta */
 }
 
 .marketplace-header {
@@ -52,11 +55,13 @@
 }
 
 .marketplace-layout {
+  margin-top: 50px;
   max-width: 1400px;
   margin: 0 auto;
   display: flex;
   gap: 16px;
   padding: 16px;
+  background-color: white;
 }
 
 .marketplace-sidebar {
@@ -118,14 +123,14 @@
 
 .nav-item.active {
   background-color: #e7f3ff;
-  color: #0064e0;
+  color: #b52ce6;
 }
 
 .create-publication {
   width: 100%;
   padding: 12px;
   border: none;
-  background-color: #0064e0;
+  background-color: #b52ce6;
   color: white;
   font-size: 15px;
   font-weight: 600;
@@ -152,7 +157,7 @@
 }
 
 .location-input {
-  background-color: #0064e0;
+  background-color: #b52ce6;
   color: white;
   padding: 8px 12px;
   border-radius: 6px;

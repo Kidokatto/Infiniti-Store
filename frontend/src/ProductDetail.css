@@ -25,10 +25,12 @@
   cursor: pointer;
   margin-bottom: 24px;
   transition: background-color 0.2s;
+  margin-top: 90px;
+  margin-left: 100px;
 }
 
 .back-button:hover {
-  background-color: #d0d2d7;
+  background-color: #b52ce6;
 }
 
 .product-detail-content {
@@ -132,7 +134,7 @@
 .buy-button {
   width: 100%;
   padding: 16px;
-  background-color: #0064e0;
+  background-color: #b52ce6;
   color: white;
   border: none;
   border-radius: 8px;

@@ -1,15 +1,15 @@
-.auth-form {
+.register-auth-form {
   width: 100%;
   display: flex;
   flex-direction: row;
 }
 
-.form-container {
-  width: 40%;
+.register-form-container {
+  width: 50%;
   padding-left: 1rem;
 }
 
-.auth-form h2 {
+.register-auth-form h2 {
   text-align: center;
   margin-bottom: 1.5rem;
   color: #333;
@@ -19,29 +19,32 @@
   font-size: 30px;
 }
 
-.form-group {
+.register-form-group {
   margin-bottom: 1rem;
 }
 
-.auth-form input {
-  width: 100%;
+.register-auth-form input {
+  width: 90%;
   padding: 0.75rem;
   border: 1px solid #b52ce6;
   border-radius: 4px;
   font-size: 1rem;
 }
 
-.image-login-container {
+.register-image-login-container {
   width: 50%;
   padding-right: 1rem;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
 }
-.auth-form input:focus {
+.register-form input:focus {
   outline: none;
   border-color: #0000ff;
   box-shadow: 0 0 0 2px rgba(33, 150, 243, 0.2);
 }
 
-.auth-form button {
+.register-form button {
   width: 108%;
   padding: 0.75rem;
   background-color: #b52ce6;
@@ -53,11 +56,11 @@
   transition: background-color 0.3s;
 }
 
-.auth-form button:hover:not(:disabled) {
+.register-form button:hover:not(:disabled) {
   background-color: #0000ff;
 }
 
-.auth-form button:disabled {
+.register-form button:disabled {
   background-color: #ccc;
   cursor: not-allowed;
 }
@@ -74,10 +77,11 @@
   margin-top: 1rem;
 }
 
-.image-login {
+.register-image-login {
   width: 90%;
   height: auto;
   border-radius: 5%;
   box-shadow: #222121;
   border: 2px solid #be16fb;
+  margin-top: 100px;
 }

@@ -51,7 +51,7 @@ function ProductDetail() {
   return (
     <div className="product-detail-container">
       <button className="back-button" onClick={() => navigate(-1)}>
-        <FiArrowLeft /> Volver
+        <FiArrowLeft /> Rgresar
       </button>
 
       <div className="product-detail-content">

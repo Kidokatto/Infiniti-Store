@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-
+import logo2 from "../assets/logo2.png";
+import "../Navbar.css"; // Asegúrate de tener este archivo CSS
 function Navbar({ onLogout }) {
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
@@ -38,13 +39,16 @@ function Navbar({ onLogout }) {
 
   return (
     <div>
-      <header className="marketplace-header">
-        <div className="header-content">
-          <h1 style={{ cursor: "pointer" }} onClick={() => navigate("/")}>
-            Infinite Store
-          </h1>
-          <button onClick={handleGoToProfile}>Ver Perfil</button>
-          <button onClick={handleLogout}>Cerrar sesión</button>
+      <header className="navbar-header">
+        <div className="navbar-container">
+          <div className="navbar-left" onClick={() => navigate("/")}>
+            <img className="header-logo" src={logo2} alt="logo" />
+            <h1 className="store-title">Infinite Store</h1>
+          </div>
+          <div className="navbar-right">
+            <button onClick={handleGoToProfile}>Ver Perfil</button>
+            <button onClick={handleLogout}>Cerrar sesión</button>
+          </div>
         </div>
       </header>
     </div>

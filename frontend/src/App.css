@@ -1,44 +1,91 @@
-html, body {
-    margin: 0;
-    padding: 0;
-    font-family: Arial, sans-serif;
-    background-color: #f0f2f5;
-    color: #050505;
-  }
-  
+html,
+body {
+  margin: 0;
+  height: 100vh;
+  background: linear-gradient(125deg, #b52ce6, #4a00e0);
+  background-size: 100% 200%;
+  animation: gradientMove 30s ease infinite; /* Animación muy lenta */
+  font-size: 15px;
+}
+
 .auth-container {
-    max-width: 400px;
-    margin: 50px auto;
-    padding: 2rem;
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  max-width: 800px;
+  margin: 50px auto;
+  padding: 2rem;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(183, 8, 247, 0.882);
+}
+
+.auth-tabs {
+  display: flex;
+  margin-bottom: 2rem;
+  border-bottom: 1px solid #ddd;
+}
+
+.auth-tabs button {
+  flex: 1;
+  padding: 1rem;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 1rem;
+  color: #666;
+  border-bottom: 2px solid transparent;
+  transition: all 0.3s;
+  font-size: 16px;
+}
+
+.auth-tabs button.active {
+  color: #000000;
+  border-bottom-color: #b52ce6;
+  font-weight: bold;
+  font-size: 20px;
+}
+
+.auth-tabs button:hover {
+  color: #b52ce6;
+}
+
+@keyframes gradientMove {
+  0% {
+    background-position: 0% 50%;
   }
-  
-  .auth-tabs {
-    display: flex;
-    margin-bottom: 2rem;
-    border-bottom: 1px solid #ddd;
+  50% {
+    background-position: 100% 50%;
   }
-  
-  .auth-tabs button {
-    flex: 1;
-    padding: 1rem;
-    border: none;
-    background: none;
-    cursor: pointer;
-    font-size: 1rem;
-    color: #666;
-    border-bottom: 2px solid transparent;
-    transition: all 0.3s;
+  100% {
+    background-position: 0% 50%;
   }
-  
-  .auth-tabs button.active {
-    color: #2196f3;
-    border-bottom-color: #2196f3;
-    font-weight: bold;
-  }
-  
-  .auth-tabs button:hover {
-    color: #1976d2;
-  }
+}
+.form-switcher {
+  position: relative;
+  min-height: 200px;
+  transition: height 0.1s ease;
+}
+
+.form-box {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  opacity: 0;
+  transform: translateX(100%);
+  transition: all 0.4s ease;
+  pointer-events: none;
+}
+
+.form-box.show {
+  opacity: 1;
+  transform: translateX(0%);
+  pointer-events: auto;
+  position: relative;
+}
+
+.form-box.hide-left {
+  transform: translateX(-10%);
+}
+
+.form-box.hide-right {
+  transform: translateX(10%);
+}

@@ -1,65 +1,75 @@
 .product-form-container {
-  background-color: #ffffff;
-  padding: 2rem;
-  border-radius: 16px;
+  width: 100%;
   max-width: 600px;
-  margin: 2rem auto;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-  font-family: "Segoe UI", "Inter", sans-serif;
+  margin: 40px auto 20px;
+  color: #333;
 }
 
 .product-form-container h2 {
-  font-size: 1.5rem;
-  font-weight: bold;
-  margin-bottom: 1.5rem;
-  color: #111;
+  font-size: 1.8rem;
+  margin-bottom: 20px;
+  color: #444;
+  text-align: center;
 }
 
-.product-form-container form {
+form {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 12px;
 }
 
-.product-form-container input[type="text"],
-.product-form-container input[type="number"],
-.product-form-container input[type="file"],
-.product-form-container textarea {
-  padding: 0.75rem 1rem;
-  border: 1px solid #ccc;
-  border-radius: 12px;
+input,
+textarea,
+button {
   font-size: 1rem;
-  background-color: #f9f9f9;
-  transition: border 0.2s ease;
-}
-
-.product-form-container input:focus,
-.product-form-container textarea:focus {
-  outline: none;
-  border-color: #339af0;
-  background-color: #fff;
-}
-
-.product-form-container textarea {
-  min-height: 100px;
-  resize: vertical;
-}
-
-.product-form-container button[type="submit"] {
-  background-color: #0069ff;
-  color: #fff;
-  font-weight: 600;
-  padding: 0.75rem;
+  padding: 10px;
   border: none;
-  border-radius: 12px;
+  border-bottom: 1px solid #ccc;
+  outline: none;
+  background-color: transparent;
+  transition: border-color 0.2s;
+}
+
+input:focus,
+textarea:focus {
+  border-bottom: 1px solid #b52ce6;
+}
+
+textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+button[type="submit"] {
+  background-color: #b52ce6;
+  color: white;
+  border-radius: 5px;
+  border: none;
+  padding: 12px;
   cursor: pointer;
+  font-weight: bold;
+  margin-top: 10px;
   transition: background-color 0.3s ease;
 }
 
-.product-form-container button[type="submit"]:hover {
-  background-color: #0056d2;
+button[type="submit"]:hover {
+  background-color: #574fd6;
 }
 
+/* Mensajes de éxito o error */
 .product-form-container p {
-  font-size: 0.95rem;
+  text-align: center;
+  font-weight: bold;
+}
+.product-form-container.animated {
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: max-height 0.5s ease, opacity 0.5s ease;
+}
+
+.product-form-container.animated.open {
+  max-height: 1000px; /* Suficiente para el formulario completo */
+  opacity: 1;
+  overflow: visible;
 }
