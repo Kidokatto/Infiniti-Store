@@ -32,16 +32,44 @@ export const getBrands = async () => {
 };
 
 export const createProduct = async (productData) => {
-  const response = await axios.post(API_URL, productData);
+  const token = localStorage.getItem("token");
+  if (!token) {
+    throw new Error("Necesitas iniciar sesión para crear un producto");
+  }
+  
+  const response = await axios.post(API_URL, productData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+      "Authorization": `Bearer ${token}`
+    }
+  });
   return response.data;
 };
 
 export const updateProduct = async (id, productData) => {
-  const response = await axios.put(`${API_URL}/${id}`, productData);
+  const token = localStorage.getItem("token");
+  if (!token) {
+    throw new Error("Necesitas iniciar sesión para actualizar un producto");
+  }
+  
+  const response = await axios.put(`${API_URL}/${id}`, productData, {
+    headers: {
+      "Authorization": `Bearer ${token}`
+    }
+  });
   return response.data;
 };
 
 export const deleteProduct = async (id) => {
-  const response = await axios.delete(`${API_URL}/${id}`);
+  const token = localStorage.getItem("token");
+  if (!token) {
+    throw new Error("Necesitas iniciar sesión para eliminar un producto");
+  }
+  
+  const response = await axios.delete(`${API_URL}/${id}`, {
+    headers: {
+      "Authorization": `Bearer ${token}`
+    }
+  });
   return response.data;
 };

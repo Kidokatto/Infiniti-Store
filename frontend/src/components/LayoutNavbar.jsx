@@ -4,7 +4,6 @@ import Navbar from "./Navbar";
 const LayoutNavbar = ({ onLogout }) => {
   const location = useLocation();
 
-  // Lista de rutas donde NO quieres mostrar el navbar
   const hiddenRoutes = ["/login"];
 
   const hideNavbar = hiddenRoutes.includes(location.pathname);

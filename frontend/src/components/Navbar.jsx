@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import logo2 from "../assets/logo2.png";
-import "../Navbar.css"; // Asegúrate de tener este archivo CSS
+import "../Navbar.css"; 
 function Navbar({ onLogout }) {
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
@@ -46,6 +46,7 @@ function Navbar({ onLogout }) {
             <h1 className="store-title">Infinite Store</h1>
           </div>
           <div className="navbar-right">
+            {user && <span>Bienvenido, {user.username}</span>}
             <button onClick={handleGoToProfile}>Ver Perfil</button>
             <button onClick={handleLogout}>Cerrar sesión</button>
           </div>

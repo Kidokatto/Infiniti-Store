@@ -70,6 +70,11 @@ function Dashboard() {
     navigate(`/product/${productId}`);
   };
 
+    const handleFormSuccess = () => {
+    fetchProducts(1);
+    setShowForm(false);
+  };
+
   return (
     <div className="marketplace-container">
       <div className="marketplace-layout">
@@ -93,9 +98,9 @@ function Dashboard() {
               {showForm ? "Cerrar formulario" : "Agregar producto"}
             </button>
 
-            {showForm && (
+             {showForm && (
               <div className="product-form-container">
-                <ProductForm />
+                <ProductForm onSuccess={handleFormSuccess} />
               </div>
             )}
           </div>

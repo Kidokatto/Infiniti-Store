@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import axios from "axios";
-import "../ProductForm.css"; // Asegúrate de que el archivo CSS esté en la misma carpeta
+import "../ProductForm.css";
 
-const ProductForm = () => {
+const ProductForm = ({ onSuccess, productToEdit }) => {
   const [formData, setFormData] = useState({
     name: "",
     description: "",
@@ -15,6 +15,21 @@ const ProductForm = () => {
   const [image, setImage] = useState(null);
   const [message, setMessage] = useState(null);
   const [error, setError] = useState(null);
+  const [isEditing, setIsEditing] = useState(false);
+
+  useEffect(() => {
+    if (productToEdit) {
+      setIsEditing(true);
+      setFormData({
+        name: productToEdit.name,
+        description: productToEdit.description,
+        price: formatPrice(productToEdit.price.toString()),
+        stock: productToEdit.stock.toString(),
+        category: productToEdit.category,
+        brand: productToEdit.brand || "",
+      });
+    }
+  }, [productToEdit]);
 
   const formatPrice = (value) => {
     const cleanedValue = value.replace(/\D/g, "");
@@ -53,12 +68,30 @@ const ProductForm = () => {
     }
 
     try {
-      await axios.post("http://localhost:8001/products/", form, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
-      setMessage("Producto agregado exitosamente");
+      const token = localStorage.getItem("token");
+      
+      if (!token) {
+        setError("Debes iniciar sesión para agregar un producto");
+        return;
+      }
+
+     if (isEditing) {
+        await axios.put(`http://localhost:8001/products/${productToEdit.id}`, formData, {
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
+          },
+        });
+        setMessage("Producto actualizado exitosamente");
+      } else {
+        await axios.post("http://localhost:8001/products/", form, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            "Authorization": `Bearer ${token}`
+          },
+        });
+        setMessage("Producto agregado exitosamente");
+      }
       setError(null);
       setFormData({
         name: "",
@@ -70,7 +103,10 @@ const ProductForm = () => {
       });
       setImage(null);
 
-      window.location.reload();
+      if (onSuccess) {
+        onSuccess();
+      }
+
     } catch (err) {
       console.error(err);
       setError("Error al agregar el producto");
@@ -80,7 +116,7 @@ const ProductForm = () => {
 
   return (
     <div className="product-form-container">
-      <h2>Agregar Producto</h2>
+      <h2>{isEditing ? "Editar Producto" : "Agregar Producto"}</h2>
       {message && <p style={{ color: "green" }}>{message}</p>}
       {error && <p style={{ color: "red" }}>{error}</p>}
 
@@ -137,9 +173,11 @@ const ProductForm = () => {
           name="image"
           accept="image/*"
           onChange={handleImageChange}
-          required
+          required={!isEditing}
         />
-        <button type="submit">Agregar Producto</button>
+         <button type="submit">
+          {isEditing ? "Actualizar Producto" : "Agregar Producto"}
+        </button>
       </form>
     </div>
   );

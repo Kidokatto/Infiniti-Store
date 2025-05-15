@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { getProduct } from "../services/product";
-import { FiArrowLeft, FiShoppingCart } from "react-icons/fi";
+import { getProduct, deleteProduct } from "../services/product";
+import { FiArrowLeft, FiShoppingCart, FiEdit, FiTrash } from "react-icons/fi";
+import axios from "axios";
+
 
 function ProductDetail() {
   const { id } = useParams();
@@ -9,12 +11,41 @@ function ProductDetail() {
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [username, setUsername] = useState("");
+  const [isOwner, setIsOwner] = useState(false);
+
 
   useEffect(() => {
     const fetchProduct = async () => {
       try {
         const data = await getProduct(id);
         setProduct(data);
+        
+        if (data.user_id) {
+          try {
+            const userResponse = await axios.get(`http://localhost:8001/auth/user/${data.user_id}`);
+            if (userResponse.data && userResponse.data.username) {
+              setUsername(userResponse.data.username);
+            }
+          } catch (userError) {
+            console.error("Error al obtener el usuario:", userError);
+          }
+        }
+        
+       const token = localStorage.getItem("token");
+        if (token) {
+          try {
+            const currentUserResponse = await axios.get("http://localhost:8001/auth/profile", {
+              headers: { Authorization: `Bearer ${token}` }
+            });
+            
+            if (data.user_id && currentUserResponse.data.id === data.user_id) {
+              setIsOwner(true);
+            }
+          } catch (err) {
+            console.error("Error al obtener perfil:", err);
+          }
+        }
       } catch (err) {
         setError("Error al cargar el producto");
         console.error(err);
@@ -28,8 +59,24 @@ function ProductDetail() {
 
   const formatPrice = (value) => {
     return value
-      .toFixed(0) // Sin decimales
+      .toFixed(0) 
       .replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+  };
+
+  const handleDelete = async () => {
+    if (window.confirm("¿Estás seguro de que deseas eliminar este producto?")) {
+      try {
+        await deleteProduct(id);
+        navigate("/");
+      } catch (err) {
+        console.error("Error al eliminar:", err);
+        alert("No se pudo eliminar el producto");
+      }
+    }
+  };
+  
+  const handleEdit = () => {
+    navigate(`/edit-product/${id}`);
   };
 
   if (loading) {
@@ -84,6 +131,13 @@ function ProductDetail() {
             <strong>Categoría:</strong> {product.category}
           </div>
 
+                {username && (
+            <div className="product-detail-vendor">
+              <strong>Vendedor:</strong> {username}
+            </div>
+          )}
+
+
           <div className="product-detail-stock">
             <strong>Stock:</strong>{" "}
             <span className={product.stock > 0 ? "in-stock" : "out-of-stock"}>
@@ -100,6 +154,17 @@ function ProductDetail() {
             <button className="buy-button" disabled={product.stock === 0}>
               <FiShoppingCart /> Comprar ahora
             </button>
+
+              {isOwner && (
+              <>
+                <button className="edit-button" onClick={handleEdit}>
+                  <FiEdit /> Editar
+                </button>
+                <button className="delete-button" onClick={handleDelete}>
+                  <FiTrash /> Eliminar
+                </button>
+              </>
+            )}
           </div>
         </div>
       </div>
