@@ -6,6 +6,8 @@ from sqlalchemy import or_, and_
 from typing import Optional
 import math
 from database import SessionLocal
+from utils.security import get_current_user
+from models.auth import User
 from models.product import Product
 from schemas.product import (
     ProductCreate, 
@@ -105,7 +107,8 @@ def create_product(
     category: str = Form(...),
     brand: str = Form(...),
     image: UploadFile = File(...),
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
 ):
     # Crear carpeta si no existe
     image_dir = "product_images"
@@ -137,15 +140,21 @@ def create_product(
     db.commit()
     db.refresh(db_product)
     return db_product
+
+
 @router.put("/{product_id}", response_model=ProductResponse)
 def update_product(
     product_id: int,
     product: ProductUpdate,
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
 ):
     db_product = db.query(Product).filter(Product.id == product_id).first()
     if not db_product:
         raise HTTPException(status_code=404, detail="Product not found")
+
+    if db_product.user_id != current_user.id:
+        raise HTTPException(status_code=403, detail="Not authorized to update this product")
     
     update_data = product.dict(exclude_unset=True)
     for field, value in update_data.items():
@@ -155,12 +164,51 @@ def update_product(
     db.refresh(db_product)
     return db_product
 
+
 @router.delete("/{product_id}")
-def delete_product(product_id: int, db: Session = Depends(get_db)):
+def delete_product(
+    product_id: int, 
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
     db_product = db.query(Product).filter(Product.id == product_id).first()
     if not db_product:
         raise HTTPException(status_code=404, detail="Product not found")
     
+    if db_product.user_id != current_user.id:
+        raise HTTPException(status_code=403, detail="Not authorized to delete this product")
+    
     db_product.is_active = False 
     db.commit()
     return {"message": "Product deleted successfully"}
+
+
+@router.get("/user/{user_id}", response_model=ProductListResponse)
+def get_user_products(
+    user_id: int,
+    page: int = Query(1, ge=1),
+    limit: int = Query(10, ge=1, le=100),
+    db: Session = Depends(get_db)
+):
+    user = db.query(User).filter(User.id == user_id).first()
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    
+    query = db.query(Product).filter(
+        Product.is_active == True,
+        Product.user_id == user_id
+    )
+    
+    total = query.count()
+    
+    skip = (page - 1) * limit
+    products = query.offset(skip).limit(limit).all()
+    
+    pages = math.ceil(total / limit)
+    
+    return ProductListResponse(
+        products=products,
+        total=total,
+        page=page,
+        pages=pages
+    )

@@ -10,6 +10,7 @@ class ProductBase(BaseModel):
     category: str
     brand: Optional[str] = None
     image_url: Optional[str] = None
+    user_id: Optional[int] = None
 
 class ProductCreate(ProductBase):
     pass
@@ -28,6 +29,7 @@ class ProductResponse(ProductBase):
     id: int
     created_at: datetime
     is_active: bool
+    user_id: int
     
     class Config:
         from_attributes = True
@@ -39,6 +41,7 @@ class ProductFilters(BaseModel):
     min_price: Optional[float] = None
     max_price: Optional[float] = None
     in_stock: Optional[bool] = None
+    user_id: Optional[int] = None
     
 class ProductListResponse(BaseModel):
     products: list[ProductResponse]

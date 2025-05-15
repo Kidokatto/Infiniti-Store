@@ -1,19 +1,27 @@
 from sqlalchemy.orm import Session
-from database import SessionLocal, engine
+from database import SessionLocal
 from models.product import Product
+from models.auth import User
 from faker import Faker
 import random
 
-# Crea una instancia de Faker para generar datos falsos
 fake = Faker()
 
-# Categorías y marcas de ejemplo
 categories = ['Electrónica', 'Ropa', 'Hogar', 'Juguetes', 'Libros']
 brands = ['Samsung', 'Nike', 'Apple', 'Sony', 'Adidas', 'LEGO']
 
 def seed_products(n=20):
     db: Session = SessionLocal()
+    
+    users = db.query(User).all()
+    
+    if not users:
+        print("No hay usuarios en la base de datos para asignar productos")
+        return
+    
     for _ in range(n):
+        user = random.choice(users)
+        
         product = Product(
             name=fake.unique.word().capitalize(),
             description=fake.text(max_nb_chars=100),
@@ -21,8 +29,9 @@ def seed_products(n=20):
             stock=random.randint(1, 100),
             category=random.choice(categories),
             brand=random.choice(brands),
-            image_url="https://via.placeholder.com/300",  # URL temporal
-            is_active=True
+            image_url="https://via.placeholder.com/300", 
+            is_active=True,
+            user_id=user.id  
         )
         db.add(product)
 

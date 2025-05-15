@@ -9,7 +9,6 @@ import os
 
 router = APIRouter(prefix="/auth")
 
-# Carpeta donde se guardarán las imágenes subidas
 UPLOAD_DIR = "uploads"
 os.makedirs(UPLOAD_DIR, exist_ok=True)
 
@@ -32,6 +31,7 @@ def login(user: UserLogin, db: Session = Depends(get_db)):
 @router.get("/profile")
 async def get_profile(current_user: User = Depends(get_current_user)):
     return {
+        "id": current_user.id,
         "username": current_user.username,
         "email": current_user.email,
         "profile_picture": current_user.profile_picture,
@@ -52,26 +52,23 @@ async def register(
     if db.query(User).filter(User.username == username).first():
         raise HTTPException(status_code=400, detail="El usuario ya se encuentra en uso")
     
-    # Generar nombres seguros para los archivos
     profile_filename = f"profile_{username}_{profile_picture.filename}"
     cover_filename = f"cover_{username}_{cover_photo.filename}"
 
     profile_picture_path = os.path.join(UPLOAD_DIR, profile_filename)
     cover_photo_path = os.path.join(UPLOAD_DIR, cover_filename)
 
-    # Guardar los archivos en disco
     with open(profile_picture_path, "wb") as buffer:
         shutil.copyfileobj(profile_picture.file, buffer)
     with open(cover_photo_path, "wb") as buffer:
         shutil.copyfileobj(cover_photo.file, buffer)
 
-    # Crear el nuevo usuario
     new_user = User(
         username=username,
         email=email,
         password=hash_password(password),
         city=city,
-        profile_picture=profile_filename,  # Guardar solo el nombre del archivo
+        profile_picture=profile_filename,
         cover_photo=cover_filename
     )
     
@@ -80,3 +77,18 @@ async def register(
     db.refresh(new_user)
     
     return new_user
+
+@router.get("/user/{user_id}")
+async def get_user_by_id(user_id: int, db: Session = Depends(get_db)):
+    user = db.query(User).filter(User.id == user_id).first()
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    
+    return {
+        "id": user.id,
+        "username": user.username,
+        "email": user.email,
+        "profile_picture": user.profile_picture,
+        "cover_photo": user.cover_photo,
+        "city": user.city,
+    }
