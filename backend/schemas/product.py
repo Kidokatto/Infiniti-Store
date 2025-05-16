@@ -30,7 +30,8 @@ class ProductResponse(ProductBase):
     created_at: datetime
     is_active: bool
     user_id: int
-    
+    user_id: Optional[int] = None  # <-- Importante que sea opcional si en la DB puede ser NULL
+
     class Config:
         from_attributes = True
 
@@ -48,3 +49,7 @@ class ProductListResponse(BaseModel):
     total: int
     page: int
     pages: int
+
+class Config:
+    orm_mode = True
+    

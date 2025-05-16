@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "../ProductForm.css";
 
@@ -69,25 +69,29 @@ const ProductForm = ({ onSuccess, productToEdit }) => {
 
     try {
       const token = localStorage.getItem("token");
-      
+
       if (!token) {
         setError("Debes iniciar sesión para agregar un producto");
         return;
       }
 
-     if (isEditing) {
-        await axios.put(`http://localhost:8001/products/${productToEdit.id}`, formData, {
-          headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${token}`
-          },
-        });
+      if (isEditing) {
+        await axios.put(
+          `http://localhost:8001/products/${productToEdit.id}`,
+          formData,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
         setMessage("Producto actualizado exitosamente");
       } else {
         await axios.post("http://localhost:8001/products/", form, {
           headers: {
             "Content-Type": "multipart/form-data",
-            "Authorization": `Bearer ${token}`
+            Authorization: `Bearer ${token}`,
           },
         });
         setMessage("Producto agregado exitosamente");
@@ -106,7 +110,6 @@ const ProductForm = ({ onSuccess, productToEdit }) => {
       if (onSuccess) {
         onSuccess();
       }
-
     } catch (err) {
       console.error(err);
       setError("Error al agregar el producto");
@@ -175,7 +178,7 @@ const ProductForm = ({ onSuccess, productToEdit }) => {
           onChange={handleImageChange}
           required={!isEditing}
         />
-         <button type="submit">
+        <button type="submit">
           {isEditing ? "Actualizar Producto" : "Agregar Producto"}
         </button>
       </form>

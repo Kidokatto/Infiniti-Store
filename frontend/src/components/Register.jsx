@@ -2,15 +2,18 @@ import { useState } from "react";
 import { registerUser } from "../services/auth";
 import logo from "../assets/logo.png";
 import "../Register.css";
+
 function Register({ onRegisterSuccess }) {
   const [form, setForm] = useState({
     username: "",
     email: "",
     password: "",
     city: "",
+    phone_number: "", // <-- NUEVO
     profile_picture: null,
     cover_photo: null,
   });
+
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -26,18 +29,19 @@ function Register({ onRegisterSuccess }) {
     e.preventDefault();
     setLoading(true);
 
-    // FormData para enviar los archivos junto con los demás datos
     const formData = new FormData();
     formData.append("username", form.username);
     formData.append("email", form.email);
     formData.append("password", form.password);
     formData.append("city", form.city);
+    formData.append("phone_number", form.phone_number); // <-- NUEVO
+
     if (form.profile_picture)
       formData.append("profile_picture", form.profile_picture);
     if (form.cover_photo) formData.append("cover_photo", form.cover_photo);
 
     try {
-      await registerUser(formData); // Asegúrate de que `registerUser` soporte FormData
+      await registerUser(formData);
       setMessage("Registro exitoso! Ahora puedes iniciar sesión.");
       if (onRegisterSuccess) {
         setTimeout(() => {
@@ -94,6 +98,15 @@ function Register({ onRegisterSuccess }) {
               value={form.city}
               onChange={handleChange}
               placeholder="Ciudad"
+              required
+            />
+          </div>
+          <div className="register-form-group">
+            <input
+              name="phone_number"
+              value={form.phone_number}
+              onChange={handleChange}
+              placeholder="Número de celular"
               required
             />
           </div>

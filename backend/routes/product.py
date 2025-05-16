@@ -126,7 +126,7 @@ def create_product(
     # Construir URL accesible públicamente
     image_url = f"/product-images/{unique_filename}"
 
-    # Crear producto en DB
+    # Crear producto en DB y asignar user_id
     db_product = Product(
         name=name,
         description=description,
@@ -134,7 +134,8 @@ def create_product(
         stock=stock,
         category=category,
         brand=brand,
-        image_url=image_url
+        image_url=image_url,
+        user_id=current_user.id   # <- Aquí está la clave
     )
     db.add(db_product)
     db.commit()

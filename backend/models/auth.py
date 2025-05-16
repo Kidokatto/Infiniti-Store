@@ -12,3 +12,4 @@ class User(Base):
     cover_photo = Column(String(255), nullable=True)
     city = Column(String(100), nullable=True)
     products = relationship("Product", back_populates="user")
+    phone_number = Column(String(20), nullable=True)

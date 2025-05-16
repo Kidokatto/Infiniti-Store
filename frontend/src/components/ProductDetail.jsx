@@ -4,7 +4,6 @@ import { getProduct, deleteProduct } from "../services/product";
 import { FiArrowLeft, FiShoppingCart, FiEdit, FiTrash } from "react-icons/fi";
 import axios from "axios";
 
-
 function ProductDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -14,16 +13,17 @@ function ProductDetail() {
   const [username, setUsername] = useState("");
   const [isOwner, setIsOwner] = useState(false);
 
-
   useEffect(() => {
     const fetchProduct = async () => {
       try {
         const data = await getProduct(id);
         setProduct(data);
-        
+
         if (data.user_id) {
           try {
-            const userResponse = await axios.get(`http://localhost:8001/auth/user/${data.user_id}`);
+            const userResponse = await axios.get(
+              `http://localhost:8001/auth/user/${data.user_id}`
+            );
             if (userResponse.data && userResponse.data.username) {
               setUsername(userResponse.data.username);
             }
@@ -31,14 +31,17 @@ function ProductDetail() {
             console.error("Error al obtener el usuario:", userError);
           }
         }
-        
-       const token = localStorage.getItem("token");
+
+        const token = localStorage.getItem("token");
         if (token) {
           try {
-            const currentUserResponse = await axios.get("http://localhost:8001/auth/profile", {
-              headers: { Authorization: `Bearer ${token}` }
-            });
-            
+            const currentUserResponse = await axios.get(
+              "http://localhost:8001/auth/profile",
+              {
+                headers: { Authorization: `Bearer ${token}` },
+              }
+            );
+
             if (data.user_id && currentUserResponse.data.id === data.user_id) {
               setIsOwner(true);
             }
@@ -58,9 +61,7 @@ function ProductDetail() {
   }, [id]);
 
   const formatPrice = (value) => {
-    return value
-      .toFixed(0) 
-      .replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    return value.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ".");
   };
 
   const handleDelete = async () => {
@@ -74,7 +75,7 @@ function ProductDetail() {
       }
     }
   };
-  
+
   const handleEdit = () => {
     navigate(`/edit-product/${id}`);
   };
@@ -131,12 +132,11 @@ function ProductDetail() {
             <strong>Categoría:</strong> {product.category}
           </div>
 
-                {username && (
+          {username && (
             <div className="product-detail-vendor">
               <strong>Vendedor:</strong> {username}
             </div>
           )}
-
 
           <div className="product-detail-stock">
             <strong>Stock:</strong>{" "}
@@ -152,14 +152,11 @@ function ProductDetail() {
 
           <div className="product-detail-actions">
             <button className="buy-button" disabled={product.stock === 0}>
-              <FiShoppingCart /> Comprar ahora
+              <FiShoppingCart /> Enviar Mensaje Al vendedor
             </button>
 
-              {isOwner && (
+            {isOwner && (
               <>
-                <button className="edit-button" onClick={handleEdit}>
-                  <FiEdit /> Editar
-                </button>
                 <button className="delete-button" onClick={handleDelete}>
                   <FiTrash /> Eliminar
                 </button>

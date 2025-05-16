@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "../Profile.css";
 import ProductItem from "./ProductItem";
+
 import { useNavigate } from "react-router-dom";
 import { deleteProduct } from "../services/product";
 
@@ -24,21 +25,21 @@ const Profile = () => {
         .then((res) => {
           setUser(res.data);
 
-          return axios.get(`http://localhost:8001/products/user/${res.data.id}`, {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          });
+          return axios.get(
+            `http://localhost:8001/products/user/${res.data.id}`,
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
         })
         .then((productsRes) => {
           setUserProducts(productsRes.data.products);
           setLoading(false);
         })
         .catch((err) => {
-          console.error(
-            "Error:",
-            err.response?.data || err.message
-          );
+          console.error("Error:", err.response?.data || err.message);
           setError("Error al cargar los datos");
           setLoading(false);
         });
@@ -47,7 +48,6 @@ const Profile = () => {
       setError("No hay sesión activa");
     }
   }, []);
-
 
   const handleProductClick = (productId) => {
     navigate(`/product/${productId}`);
@@ -58,10 +58,14 @@ const Profile = () => {
   };
 
   const handleDeleteProduct = async (productId) => {
-    if (window.confirm("¿Estás seguro de que quieres eliminar este producto?")) {
+    if (
+      window.confirm("¿Estás seguro de que quieres eliminar este producto?")
+    ) {
       try {
         await deleteProduct(productId);
-        setUserProducts(userProducts.filter(product => product.id !== productId));
+        setUserProducts(
+          userProducts.filter((product) => product.id !== productId)
+        );
       } catch (err) {
         console.error("Error al eliminar:", err);
         alert("No se pudo eliminar el producto");
@@ -85,7 +89,7 @@ const Profile = () => {
     );
   }
 
-    if (!user) {
+  if (!user) {
     return (
       <div className="error-container">
         <div className="error-text">No se encontró información del usuario</div>
@@ -120,6 +124,7 @@ const Profile = () => {
 
         <p>{user.username}</p>
         <p>{user.email}</p>
+        <p>{user.phone_number}</p>
 
         <section className="info">
           <div>Ciudad: {user.city}</div>
@@ -127,9 +132,9 @@ const Profile = () => {
         </section>
       </section>
 
-        <section className="user-products">
+      <section className="user-products">
         <h2>Mis Productos</h2>
-        
+
         {userProducts.length === 0 ? (
           <p>No has publicado ningún producto todavía.</p>
         ) : (
