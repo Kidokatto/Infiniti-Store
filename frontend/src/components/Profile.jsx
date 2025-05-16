@@ -123,8 +123,8 @@ const Profile = () => {
         />
 
         <p>{user.username}</p>
-        <p>{user.email}</p>
-        <p>{user.phone_number}</p>
+        <p>Correo: {user.email}</p>
+        <p>Num Cel: {user.phone_number}</p>
 
         <section className="info">
           <div>Ciudad: {user.city}</div>

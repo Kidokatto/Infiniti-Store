@@ -112,7 +112,7 @@ function Register({ onRegisterSuccess }) {
           </div>
           <div className="register-form-group">
             <input
-              id="image-upload"
+              id="image-upload1"
               className="input-file"
               name="profile_picture"
               type="file"
