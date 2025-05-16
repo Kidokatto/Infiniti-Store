@@ -1,7 +1,7 @@
 .marketplace-container {
   margin-top: 70px;
   min-height: 100vh;
-  background: linear-gradient(125deg, #c89bfb, #79a4f5);
+  background-color: white;
   background-size: 100% 200%;
   animation: gradientMove 30s ease infinite; /* Animación muy lenta */
 }
