@@ -3,6 +3,7 @@
   max-width: 600px;
   margin: 40px auto 20px;
   color: #333;
+  font-family: "Arial", sans-serif;
 }
 
 .product-form-container h2 {
@@ -53,7 +54,7 @@ button[type="submit"] {
 }
 
 button[type="submit"]:hover {
-  background-color: #574fd6;
+  background-color: #5795e6;
 }
 
 /* Mensajes de éxito o error */
@@ -72,4 +73,28 @@ button[type="submit"]:hover {
   max-height: 1000px; /* Suficiente para el formulario completo */
   opacity: 1;
   overflow: visible;
+}
+
+/* Ocultar el input de archivo original */
+.image-input-file {
+  display: none;
+}
+
+/* Botón personalizado */
+.image-input-file + label {
+  background-color: #b52ce6;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 16px;
+  display: inline-block;
+  transition: background 0.3s ease;
+  margin-bottom: 10px;
+  text-align: center;
+  font-weight: 600; /* o 700 para más negrita */
+}
+
+.image-input-file + label:hover {
+  background-color: #5795e6;
 }

@@ -112,21 +112,27 @@ function Register({ onRegisterSuccess }) {
           </div>
           <div className="register-form-group">
             <input
+              id="image-upload"
+              className="input-file"
               name="profile_picture"
               type="file"
               onChange={handleFileChange}
               accept="image/*"
             />
+            <label htmlFor="image-upload">Selecciona Foto de Perfil</label>
           </div>
           <div className="register-form-group">
             <input
+              id="image-upload"
+              className="input-file"
               name="cover_photo"
               type="file"
               onChange={handleFileChange}
               accept="image/*"
             />
+            <label htmlFor="image-upload">Selecciona Foto de Portada</label>
           </div>
-          <button type="submit" disabled={loading}>
+          <button className="buttonregister" type="submit" disabled={loading}>
             {loading ? "Registrando..." : "Registrarse"}
           </button>
         </form>

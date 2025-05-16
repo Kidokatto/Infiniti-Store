@@ -85,3 +85,41 @@
   border: 2px solid #be16fb;
   margin-top: 100px;
 }
+
+.input-file {
+  display: none;
+}
+
+.input-file + label {
+  background-color: #b52ce6;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 16px;
+  display: inline-block;
+  transition: background 0.3s ease;
+  margin-bottom: 10px;
+  text-align: center;
+  font-weight: 600; /* o 700 para más negrita */
+  width: 332px;
+}
+
+.input-file + label:hover {
+  background-color: #5795e6;
+}
+
+.buttonregister {
+  background-color: #b52ce6;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  display: inline-block;
+  transition: background 0.3s ease;
+  margin-bottom: 10px;
+  text-align: center;
+  font-weight: 600; /* o 700 para más negrita */
+  width: 375px;
+}

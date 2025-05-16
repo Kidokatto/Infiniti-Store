@@ -172,12 +172,16 @@ const ProductForm = ({ onSuccess, productToEdit }) => {
           required
         />
         <input
+          id="image-upload-register"
+          className="image-input-file   "
           type="file"
           name="image"
           accept="image/*"
           onChange={handleImageChange}
           required={!isEditing}
         />
+        <label htmlFor="image-upload-register">Seleccionar imagen</label>
+
         <button type="submit">
           {isEditing ? "Actualizar Producto" : "Agregar Producto"}
         </button>

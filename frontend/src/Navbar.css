@@ -41,7 +41,7 @@
 }
 
 .navbar-right button {
-  background-color: #6c63ff; /* Color principal */
+  background-color: #b52ce6; /* Color principal */
   color: white;
   border: none;
   padding: 8px 12px;
@@ -53,5 +53,5 @@
 }
 
 .navbar-right button:hover {
-  background-color: #574fd6;
+  background-color: #5795e6;
 }
