@@ -8,13 +8,6 @@ services:
     envVars:
       - key: PYTHON_VERSION
         value: 3.11
-      - key: DATABASE_URL
-        value: sqlite:///infinite_store.db
-      - key: FRONTEND_URL
-        fromService:
-          name: frontend-app
-          type: web
-          property: url
     autoDeploy: true
 
   # Frontend service (React/Vite)
@@ -26,9 +19,4 @@ services:
     envVars:
       - key: NODE_VERSION
         value: 20.11.0
-      - key: VITE_API_URL
-        fromService:
-          name: backend-api
-          type: web
-          property: url
     autoDeploy: true
