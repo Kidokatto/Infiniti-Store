@@ -1,0 +1,34 @@
+services:
+  # Backend service (FastAPI)
+  - type: web
+    name: backend-api
+    env: python
+    buildCommand: pip install -r backend/requirements.txt
+    startCommand: cd backend && uvicorn main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11
+      - key: DATABASE_URL
+        value: sqlite:///infinite_store.db
+      - key: FRONTEND_URL
+        fromService:
+          name: frontend-app
+          type: web
+          property: url
+    autoDeploy: true
+
+  # Frontend service (React/Vite)
+  - type: web
+    name: frontend-app
+    env: node
+    buildCommand: cd frontend && npm install && npm run build
+    startCommand: cd frontend && npm run preview -- --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: NODE_VERSION
+        value: 20.11.0
+      - key: VITE_API_URL
+        fromService:
+          name: backend-api
+          type: web
+          property: url
+    autoDeploy: true
